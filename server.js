@@ -125,11 +125,11 @@ app.get('/', (req, res) => {
                 gap: 20px;
                 font-size: 38px;
                 color: #eceff4;
+                padding: 20px;
             }
             .div form {
                 max-width: 1360px;
                 width: 100%;
-                padding: 20px;
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
