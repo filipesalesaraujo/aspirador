@@ -164,7 +164,7 @@ app.get('/', (req, res) => {
             }
         </style>
         <div class="div">
-            <h1>Download HTML with Inline CSS and Images in ZIP</h1>
+            <h1>Baixe HTML com CSS Inline e Imagens em ZIP</h1>
             <form action="/download" method="post">
                 <label for="url">URL da página:</label>
                 <input type="text" id="url" name="url" placeholder="https://example.com">
