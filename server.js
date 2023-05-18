@@ -14,12 +14,17 @@ app.use(session({ secret: 'my-secret', resave: false, saveUninitialized: false }
 
 let downloadReady = false;  // Variable to track when the download is ready
 
-
 async function downloadPageWithResources(url) {
     try {
         const response = await axios.get(url);
         const dom = new JSDOM(response.data);
         const document = dom.window.document;
+
+        // Load Poppins font from Google Fonts
+        const fontLink = document.createElement('link');
+        fontLink.rel = 'stylesheet';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
+        document.head.appendChild(fontLink);
 
         const cssLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
         for (let link of cssLinks) {
@@ -60,12 +65,112 @@ async function downloadPageWithResources(url) {
 
 app.get('/', (req, res) => {
     res.send(`
-        <h1>Download HTML with Inline CSS and Images in ZIP</h1>
-        <form action="/download" method="post">
-            <label for="url">URL da página:</label>
-            <input type="text" id="url" name="url" placeholder="https://example.com">
-            <button type="submit">Baixar tudo em ZIP</button>
-        </form>
+        <style>
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed, 
+            figure, figcaption, footer, header, hgroup, 
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure, 
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }    
+            body {
+                    font-family: 'Poppins', sans-serif;
+                }
+            h1, h2, h3 {
+                font-weight: 700;
+            }
+            .div {
+                background: #2e3440;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                font-size: 38px;
+                color: #eceff4;
+            }
+            .div form {
+                max-width: 1360px;
+                width: 100%;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            .div form input {
+                width: 100%;
+                font-size: 24px;
+                width: 100%;
+                border-radius: 5px;
+                padding: 5px 10px;
+                box-shadow: none;
+                background: #e5e9f0;
+                border: 0;
+            }
+            .div form button {
+                background: #5e81ac;
+                border: 0;
+                border-radius: 5px;
+                padding: 5px 10px;
+                font-size: 24px;
+                width: 100%;
+            }
+            .div form button {
+                cursor: pointer;
+                transition: 0.3s ease-in-out;
+            }
+            .div form button:hover,
+            .div form button:active,
+            .div form button:focus {
+                background: #a3be8c;
+            }
+        </style>
+        <div class="div">
+            <h1>Download HTML with Inline CSS and Images in ZIP</h1>
+            <form action="/download" method="post">
+                <label for="url">URL da página:</label>
+                <input type="text" id="url" name="url" placeholder="https://example.com">
+                <button type="submit">Baixar tudo em ZIP</button>
+            </form>
+        </div>
     `);
 });
 
